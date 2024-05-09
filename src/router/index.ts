@@ -289,6 +289,42 @@ export const dynamicRoutes: RouteRecordRaw[] = [
   }
 ]
 
+export const menuList: RouteRecordRaw[] = [
+  {
+    path: "/test",
+    component: 'Layouts',
+    redirect: "/table/element-plus",
+    name: "testpage",
+    meta: {
+      title: "路由测试",
+      elIcon: "Grid",
+      roles: ["admin", "editor"], // 可以在根路由中设置角色
+    },
+    children: [
+      {
+        path: "test1",
+        component: 'routeTest/test1/index',
+        name: "test1",
+        meta: {
+          title: "测试1",
+          keepAlive: true,
+          roles: ["admin", "editor"], // 可以在根路由中设置角色
+        }
+      },
+      {
+        path: "test2",
+        component: 'routeTest/test2/index',
+        name: "test2",
+        meta: {
+          title: "测试2",
+          keepAlive: true,
+          roles: ["admin", "editor"], // 可以在根路由中设置角色
+        }
+      }
+    ]
+  }
+]
+
 const router = createRouter({
   history,
   routes: routeSettings.thirdLevelRouteCache ? flatMultiLevelRoutes(constantRoutes) : constantRoutes

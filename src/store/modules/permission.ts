@@ -2,9 +2,13 @@ import { ref } from "vue"
 import store from "@/store"
 import { defineStore } from "pinia"
 import { type RouteRecordRaw } from "vue-router"
-import { constantRoutes, dynamicRoutes } from "@/router"
+import { constantRoutes, dynamicRoutes, menuList } from "@/router"
 import { flatMultiLevelRoutes } from "@/router/helper"
 import routeSettings from "@/config/route"
+
+const Layouts = () => import("@/layouts/index.vue")
+// 所有的页面
+const loadView = import.meta.glob(`../../views/**/*.vue`)
 
 const hasPermission = (roles: string[], route: RouteRecordRaw) => {
   const routeRoles = route.meta?.roles
@@ -25,6 +29,19 @@ const filterDynamicRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
   return res
 }
 
+function setR(routes) {
+  routes.forEach(route => {
+    if (route.component === 'Layouts') {
+      route.component = Layouts
+    } else {
+      route.component = loadView[`../../views/${route.component}.vue`]
+    }
+    if (route.children) {
+      setR(route.children)
+    }
+  })
+}
+
 export const usePermissionStore = defineStore("permission", () => {
   /** 可访问的路由 */
   const routes = ref<RouteRecordRaw[]>([])
@@ -32,9 +49,13 @@ export const usePermissionStore = defineStore("permission", () => {
   const addRoutes = ref<RouteRecordRaw[]>([])
 
   /** 根据角色生成可访问的 Routes（可访问的路由 = 常驻路由 + 有访问权限的动态路由） */
-  const setRoutes = (roles: string[]) => {
+  const setRoutes = async(roles: string[]) => {
     const accessedRoutes = filterDynamicRoutes(dynamicRoutes, roles)
-    _set(accessedRoutes)
+    console.log('--准备处理菜单组件', loadView);
+    await setR(menuList)
+    console.log('--处理完菜单组件', menuList);
+
+    _set([...accessedRoutes, ...menuList])
   }
 
   /** 所有路由 = 所有常驻路由 + 所有动态路由 */
