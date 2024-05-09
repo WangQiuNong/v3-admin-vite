@@ -51,6 +51,7 @@ const defaultSettings: LayoutSettings = {
   showWatermark: true,
   showGreyMode: false,
   showColorWeakness: false,
+  showLangSelect: true,
   lang: 'zh-CN'
 }
 

@@ -1,48 +1,37 @@
 <script lang="ts" setup>
-import { type ThemeName, useTheme } from "@/hooks/useTheme"
-import { MagicStick } from "@element-plus/icons-vue"
+import { type Lang, useLang } from "@/hooks/useLang"
+import { Eleme } from "@element-plus/icons-vue"
+import { ElMessage } from "element-plus"
+import { useI18n } from 'vue-i18n';
 
-const { themeList, activeThemeName, setTheme } = useTheme()
-
-const handleChangeTheme = ({ clientX, clientY }: MouseEvent, themeName: ThemeName) => {
-  const maxRadius = Math.hypot(
-    Math.max(clientX, window.innerWidth - clientX),
-    Math.max(clientY, window.innerHeight - clientY)
-  )
-  const style = document.documentElement.style
-  style.setProperty("--v3-theme-x", clientX + "px")
-  style.setProperty("--v3-theme-y", clientY + "px")
-  style.setProperty("--v3-theme-r", maxRadius + "px")
-  const handler = () => {
-    setTheme(themeName)
-  }
-  // @ts-expect-error
-  document.startViewTransition ? document.startViewTransition(handler) : handler()
+const { langList, activeLang, setLang } = useLang()
+const { t, locale } = useI18n()
+function changeLang(lang: Lang) {
+  setLang(lang)
+  locale.value = lang
+  ElMessage.success(t('common.switchLanguage'));
 }
+
 </script>
 
 <template>
   <el-dropdown trigger="click">
     <div>
-      <el-tooltip effect="dark" content="主题模式" placement="bottom">
+      <el-tooltip effect="dark" :content="t('common.lang')" placement="bottom">
         <el-icon :size="20">
-          <MagicStick />
+          <Eleme />
         </el-icon>
       </el-tooltip>
     </div>
     <template #dropdown>
       <el-dropdown-menu>
         <el-dropdown-item
-          v-for="(theme, index) in themeList"
+          v-for="(lang, index) in langList"
           :key="index"
-          :disabled="activeThemeName === theme.name"
-          @click="
-            (e) => {
-              handleChangeTheme(e, theme.name)
-            }
-          "
+          :disabled="activeLang === lang.name"
+          @click="changeLang(lang.name)"
         >
-          <span>{{ theme.title }}</span>
+          <span>{{ lang.title }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </template>

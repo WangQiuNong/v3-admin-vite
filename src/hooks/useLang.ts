@@ -4,6 +4,10 @@ import { getActiveLang, setActiveLang } from "@/utils/cache/local-storage"
 const DEFAULT_LANG = "zh-CN"
 type DefaultLang = typeof DEFAULT_LANG
 
+/** 语言类型
+ * zh-CN
+ * en
+ */
 export type Lang = DefaultLang | string
 
 interface LangList {
@@ -28,6 +32,7 @@ const activeLang = ref<Lang>(getActiveLang() || DEFAULT_LANG)
 /** 设置主题 */
 const setLang = (value: Lang) => {
   activeLang.value = value
+  setActiveLang(value)
 }
 
 /** 初始化 */
@@ -40,6 +45,6 @@ const initLang = () => {
 }
 
 /** 主题 hook */
-export function useTheme() {
+export function useLang() {
   return { langList, activeLang, initLang, setLang }
 }

@@ -3,6 +3,7 @@ import { createApp } from "vue"
 import App from "@/App.vue"
 import store from "@/store"
 import router from "@/router"
+import i18n from '@/locales/useI18n'
 import "@/router/permission"
 // load
 import { loadSvg } from "@/icons"
@@ -24,7 +25,7 @@ loadSvg(app)
 /** 加载自定义指令 */
 loadDirectives(app)
 
-app.use(store).use(router)
+app.use(store).use(router).use(i18n)
 router.isReady().then(() => {
   app.mount("#app")
 })
