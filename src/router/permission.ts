@@ -10,6 +10,9 @@ import isWhiteList from "@/config/white-list"
 import NProgress from "nprogress"
 import "nprogress/nprogress.css"
 
+const Layouts = () => import("@/layouts/index.vue")
+const loadView = (name) => import.meta.glob(`@/views/${name}.vue`)
+
 const { setTitle } = useTitle()
 NProgress.configure({ showSpinner: false })
 
@@ -43,7 +46,54 @@ router.beforeEach(async (to, _from, next) => {
     // 生成可访问的 Routes
     routeSettings.dynamic ? permissionStore.setRoutes(roles) : permissionStore.setAllRoutes()
     // 将 "有访问权限的动态路由" 添加到 Router 中
-    permissionStore.addRoutes.forEach((route) => router.addRoute(route))
+    permissionStore.addRoutes.forEach((route) => {
+      console.log(route)
+      router.addRoute(route)
+    })
+
+    const menu = [
+      {
+        path: "/test-page",
+        component: 'Layouts',
+        redirect: "/table/element-plus",
+        name: "testpage",
+        meta: {
+          title: "路由测试",
+          elIcon: "Grid"
+        },
+        children: [
+          {
+            path: "test1",
+            component: 'routeTest/test1/index',
+            name: "test1",
+            meta: {
+              title: "测试",
+              keepAlive: true
+            }
+          }
+        ]
+      }
+    ]
+    function setR(routes) {
+      routes.forEach(route => {
+        if (route.component === 'Layouts') {
+          route.component = Layouts
+        } else {
+          route.component = loadView(route.component)
+        }
+        if (route.children) {
+          setR(route.children)
+        }
+      })
+    }
+    await setR(menu)
+    console.log(menu);
+    
+    menu.forEach(route => {
+      console.log('---mmmm', route);
+      router.addRoute(route)
+    })
+
     // 确保添加路由已完成
     // 设置 replace: true, 因此导航将不会留下历史记录
     next({ ...to, replace: true })
