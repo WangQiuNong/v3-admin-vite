@@ -122,11 +122,11 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "vxe-table",
-        component: () => import("@/views/table/vxe-table/index.vue"),
-        name: "VxeTable",
+        path: "composables",
+        component: () => import("@/views/table/useCrud/index.vue"),
+        name: "Composables",
         meta: {
-          title: "Vxe Table",
+          title: "组合式函数",
           keepAlive: true
         }
       }

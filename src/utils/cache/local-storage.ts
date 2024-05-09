@@ -37,6 +37,15 @@ export const setActiveThemeName = (themeName: ThemeName) => {
 }
 //#endregion
 
+//#region 正在应用的语言
+export const getActiveLang = () => {
+  return localStorage.getItem(CacheKey.ACTIVE_LANG) as ThemeName | null
+}
+export const setActiveLang = (lang: ThemeName) => {
+  localStorage.setItem(CacheKey.ACTIVE_LANG, lang)
+}
+//#endregion
+
 //#region 标签栏
 export const getVisitedViews = () => {
   const json = localStorage.getItem(CacheKey.VISITED_VIEWS)

@@ -31,6 +31,8 @@ export interface LayoutSettings {
   showGreyMode: boolean
   /** 是否显示色弱模式 */
   showColorWeakness: boolean
+  /** i18n语言选择 */
+  lang: string
 }
 
 /** 默认配置 */
@@ -48,7 +50,8 @@ const defaultSettings: LayoutSettings = {
   cacheTagsView: false,
   showWatermark: true,
   showGreyMode: false,
-  showColorWeakness: false
+  showColorWeakness: false,
+  lang: 'zh-CN'
 }
 
 /** 项目配置 */
