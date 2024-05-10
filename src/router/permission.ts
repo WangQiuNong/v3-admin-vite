@@ -44,13 +44,12 @@ router.beforeEach(async (to, _from, next) => {
     // 生成可访问的 Routes
     routeSettings.dynamic ? await permissionStore.setRoutes(roles) : await permissionStore.setAllRoutes()
     // 将 "有访问权限的动态路由" 添加到 Router 中
-
     permissionStore.addRoutes.forEach((route) => {
       router.addRoute(route)
     })
     console.log('路由添加结束');
-
     // 确保添加路由已完成
+
     // 设置 replace: true, 因此导航将不会留下历史记录
     next({ ...to, replace: true })
   } catch (err: any) {

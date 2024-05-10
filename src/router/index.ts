@@ -289,7 +289,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
   }
 ]
 
-export const menuList: RouteRecordRaw[] = [
+export const menuList: Object[] = [
   {
     path: "/test",
     component: 'Layouts',

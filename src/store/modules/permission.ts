@@ -29,7 +29,7 @@ const filterDynamicRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
   return res
 }
 
-function setR(routes) {
+function setR(routes: Object[]) {
   routes.forEach(route => {
     if (route.component === 'Layouts') {
       route.component = Layouts
