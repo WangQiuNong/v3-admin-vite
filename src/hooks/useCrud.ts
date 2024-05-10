@@ -4,8 +4,15 @@ interface TableResult<T = any> {
   total: number;
   list: T[];
 }
-
+interface PaginationData {
+  total?: number
+  currentPage?: number
+  pageSizes?: number[]
+  pageSize?: number
+  layout?: string
+}
 interface IOptions<T = any> {
+  page: PaginationData;
   // api
   apiFn: (params: any) => Promise<ApiResponseData>;
   // api请求参数
@@ -17,18 +24,24 @@ interface IOptions<T = any> {
   // 立即执行getList函数
   immediate?: boolean;
 }
+
+const defaultPaginationData: PaginationData = {
+  total: 0,
+  currentPage: 1,
+  pageSizes: [10, 20, 50],
+  pageSize: 10,
+  layout: "total, sizes, prev, pager, next, jumper"
+}
+
 export function useCrud(options: IOptions) {
   const loading = ref<Boolean>(false)
   const tableData = ref<T[]>([])
   const paramsInit = JSON.parse(JSON.stringify(options.params || {}));
   const search_screen = {}
-  const page = reactive({
-    pageNum: 1,
-    pageSize: 10,
-    total: 0,
-    pageSizes: [10, 20, 50],
-    layout: "total, sizes, prev, pager, next, jumper"
-  })
+  const page = reactive({...defaultPaginationData})
+  if (options.page) {
+    Object.assign(page, options.page)
+  }
 
   function currentChange(val) {
     page.pageNum = val
@@ -57,7 +70,7 @@ export function useCrud(options: IOptions) {
       options.callback && (res.data = options.callback(res.data))
       list = (isPageable ? res.data?.list : res.data) || []
       total = res.data?.total || 0
-    } catch (error) { 
+    } catch (error) {
       console.error('---getTableList请求失败---', error)
     }
     loading.value = false

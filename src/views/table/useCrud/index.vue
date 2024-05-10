@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue"
-import { type CreateOrUpdateTableRequestData, type GetTableData } from "@/api/table/types/table"
+import { type GetTableData } from "@/api/table/types/table"
 import { type FormInstance, type FormRules, ElMessage, ElMessageBox } from "element-plus"
 import { Search, Refresh, Delete, Download, RefreshRight } from "@element-plus/icons-vue"
 import { cloneDeep } from "lodash-es"
 
 import { useCrud } from '@/hooks/useCrud'
-import { resolve } from "path"
 
 defineOptions({
   // 命名当前组件
@@ -55,7 +54,6 @@ const { loading, tableData, page, currentChange, sizeChange, handleSearch, getTa
 function handleUpdate(row) {
   alert(row.username)
 }
-
 </script>
 
 <template>
