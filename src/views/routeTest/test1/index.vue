@@ -28,11 +28,11 @@ const lineOptions = computed((): ECOption => ({
     }
   },
   legend: {
-    data: ['销售额', '内容量']
+    // data: ['销售额', '内容量']
   },
   grid: {
     left: '3%',
-    right: '4%',
+    right: '3%',
     bottom: '3%',
     containLabel: true
   },

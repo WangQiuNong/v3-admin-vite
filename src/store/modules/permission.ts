@@ -29,7 +29,7 @@ const filterDynamicRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
   return res
 }
 
-function setR(routes: Object[]) {
+function dealMenu(routes: Object[]) {
   routes.forEach(route => {
     if (route.component === 'Layouts') {
       route.component = Layouts
@@ -37,7 +37,7 @@ function setR(routes: Object[]) {
       route.component = loadView[`../../views/${route.component}.vue`]
     }
     if (route.children) {
-      setR(route.children)
+      dealMenu(route.children)
     }
   })
 }
@@ -52,7 +52,7 @@ export const usePermissionStore = defineStore("permission", () => {
   const setRoutes = async(roles: string[]) => {
     const accessedRoutes = filterDynamicRoutes(dynamicRoutes, roles)
     console.log('--准备处理菜单组件', loadView);
-    await setR(menuList)
+    await dealMenu(menuList)
     console.log('--处理完菜单组件', menuList);
 
     _set([...accessedRoutes, ...menuList])
