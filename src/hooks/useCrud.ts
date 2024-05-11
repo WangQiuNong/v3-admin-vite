@@ -42,17 +42,18 @@ export function useCrud(options: IOptions) {
   if (options.page) {
     Object.assign(page, options.page)
   }
-
+  // 页码切换
   function currentChange(val) {
     page.pageNum = val
     getTableList()
   }
-  // 条数
+  // 条数切换
   function sizeChange(val) {
     page.pageNum = 1
     page.pageSize = val
     getTableList()
   }
+  // 更新页码，搜索
   function handleSearch() {
     page.pageNum = 1
     Object.assign(search_screen, JSON.parse(JSON.stringify(options.params)))
@@ -77,6 +78,7 @@ export function useCrud(options: IOptions) {
     tableData.value = list
     page.total = total
   }
+  // 重置数据，再搜索
   function resetSearch() {
     page.pageNum = 1
     page.pageSize = 10

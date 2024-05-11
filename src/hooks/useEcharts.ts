@@ -25,7 +25,7 @@ export function useEcharts(elRef: Ref<HTMLDivElement>, options: Ref<ECOption>) {
 
   initChart()
 
-  // 监听options变化
+  // 监听options变化，处理数据返回较慢的场景
   watch(options, (newValue) => {
     if (myChart) {
       setOptions(newValue)
